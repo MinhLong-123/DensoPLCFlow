@@ -227,15 +227,15 @@ sequenceDiagram
 
     Note over ExtDev,Intech: Bước 1 - Intech báo sẵn sàng
     ExtDev->>Intech: Modbus Read (poll)
-    Intech-->>ExtDev: D7600 = 1 (Ready)
-    ExtDev->>AMR: Tín hiệu xuống: hệ thống sẵn sàng
+    Intech-->>ExtDev: D6000 = 1 (Ready)
+    ExtDev->>AMR: Tín hiệu xuống: băng tải sẵn sàng nhận pallet từ AMR
 
-    Note over AMR,ExtDev: Bước 2 - AMR hoàn tất thao tác và báo lên
+    Note over AMR,ExtDev: Bước 2 - AMR hoàn tất đặt pallet lên băng tải
     AMR->>ExtDev: Tín hiệu lên: hoàn tất thao tác
-    ExtDev->>Intech: Modbus Write D7583 = 1
+    ExtDev->>Intech: Modbus Write D6500 = 1
 
-    Note over ExtDev,Intech: Bước 3 - Intech xác nhận điều kiện an toàn
+    Note over ExtDev,Intech: Bước 3 - Băng tải hoàn thành việc nhận pallet
     ExtDev->>Intech: Modbus Read (poll)
-    Intech-->>ExtDev: D7602 = 1
-    ExtDev->>AMR: Tín hiệu xuống: xác nhận an toàn
+    Intech-->>ExtDev: D6002 = 1
+    ExtDev->>AMR: Tín hiệu xuống: xác nhận băng tải đã nhận pallet
 ```
