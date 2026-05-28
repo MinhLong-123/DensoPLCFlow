@@ -211,3 +211,31 @@ AMR đến QR → ExtDev ghi D7000
 ---
 
 *Tạo từ tài liệu giao tiếp Modbus TCP/IP Conveyor Intech với AMR; bổ sung lớp External Device và tín hiệu AMR ↔ External Device.*
+
+---
+
+## Sequence diagram — luồng ngắn theo hình mới
+
+Luồng này được thêm theo bảng tín hiệu trong ảnh mới: Intech phát trạng thái sẵn sàng/an toàn, AMR xác nhận hoàn tất thao tác qua External Device.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant AMR as AMR
+    participant ExtDev as External Device
+    participant Intech as Intech PLC
+
+    Note over ExtDev,Intech: Bước 1 - Intech báo sẵn sàng
+    ExtDev->>Intech: Modbus Read (poll)
+    Intech-->>ExtDev: D7600 = 1 (Ready)
+    ExtDev->>AMR: Tín hiệu xuống: hệ thống sẵn sàng
+
+    Note over AMR,ExtDev: Bước 2 - AMR hoàn tất thao tác và báo lên
+    AMR->>ExtDev: Tín hiệu lên: hoàn tất thao tác
+    ExtDev->>Intech: Modbus Write D7583 = 1
+
+    Note over ExtDev,Intech: Bước 3 - Intech xác nhận điều kiện an toàn
+    ExtDev->>Intech: Modbus Read (poll)
+    Intech-->>ExtDev: D7602 = 1
+    ExtDev->>AMR: Tín hiệu xuống: xác nhận an toàn
+```
